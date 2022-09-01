@@ -1,5 +1,5 @@
 import { toggleForm, clearForm } from "./form.js";
-import { initDb, getDb, postDb } from './database';
+import { initDb, getDb, postDb, deleteDb } from './database';
 import { fetchCards } from "./cards.js";
 
 import { Tooltip, Toast, Popover } from 'bootstrap';
@@ -19,6 +19,15 @@ window.addEventListener('load', function () {
   document.getElementById('dogThumbnail').src = Dog;
   this.document.getElementById('logo').src = Bicycle;
 });
+
+window.deleteCard = (e) => {
+  // Grabs the id from the button element attached to the contact card.
+  let id = parseInt(e.id);
+  // Delete the card
+  deleteDb(id);
+    // Reload the DOM
+  fetchCards();
+};
 
 // Form functionality
 const form = document.getElementById("formToggle");
