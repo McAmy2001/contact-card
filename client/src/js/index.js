@@ -1,5 +1,5 @@
 import { toggleForm, clearForm } from "./form.js";
-import { initDb, getDb, postDb, deleteDb } from './database';
+import { initDb, getDb, postDb, deleteDb, editDb } from './database';
 import { fetchCards } from "./cards.js";
 
 import { Tooltip, Toast, Popover } from 'bootstrap';
@@ -29,6 +29,20 @@ window.deleteCard = (e) => {
   fetchCards();
 };
 
+window.editCard = (e) => {
+  profileId = parseInt(e.dataset.id);
+  let editName = e.dataset.name;
+  let editEmail = e.dataset.email;
+  let editPhone = e.dataset.phone;
+
+  document.getElementById("name").value = editName;
+  document.getElementById("email").value = editEmail;
+  document.getElementById("phone").value = editPhone;
+
+  form.style.display = "block";
+  submitBtnToUpdate = true;
+};
+
 // Form functionality
 const form = document.getElementById("formToggle");
 const newContactButton = document.getElementById("new-contact");
@@ -51,6 +65,11 @@ let profile = document.querySelector('input[type="radio"]:checked').value;
 if (submitBtnToUpdate == false) {
   postDb(name, email, phone, profile);
 } else {
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let email = document.getElementById("email").value;
+  let profile = document.querySelector('input[type="radio"]:checked').value;
+  editDb(profileId, name, email, phone, profile);
 
   fetchCards();
     // Toggles the submit button back to POST functionality
