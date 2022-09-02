@@ -25,7 +25,7 @@ window.deleteCard = (e) => {
   let id = parseInt(e.id);
   // Delete the card
   deleteDb(id);
-    // Reload the DOM
+  // Reload the DOM
   fetchCards();
 };
 
@@ -51,37 +51,37 @@ let profileId;
 
 newContactButton.addEventListener('click', event => {
   toggleForm()
- })
+})
 
 form.addEventListener('submit', event => {
   // Handle data
   event.preventDefault();
-let name = document.getElementById("name").value;
-let phone = document.getElementById("phone").value;
-let email = document.getElementById("email").value;
-let profile = document.querySelector('input[type="radio"]:checked').value;
-
-  // Post form data to IndexedDB OR Edit an existing card in IndexedDB
-if (submitBtnToUpdate == false) {
-  postDb(name, email, phone, profile);
-} else {
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
   let email = document.getElementById("email").value;
   let profile = document.querySelector('input[type="radio"]:checked').value;
-  editDb(profileId, name, email, phone, profile);
 
-  fetchCards();
+  // Post form data to IndexedDB OR Edit an existing card in IndexedDB
+  if (submitBtnToUpdate == false) {
+    postDb(name, email, phone, profile);
+  } else {
+    let name = document.getElementById("name").value;
+    let phone = document.getElementById("phone").value;
+    let email = document.getElementById("email").value;
+    let profile = document.querySelector('input[type="radio"]:checked').value;
+    editDb(profileId, name, email, phone, profile);
+
+    fetchCards();
     // Toggles the submit button back to POST functionality
-  submitBtnToUpdate = false;
-}
+    submitBtnToUpdate = false;
+  }
 
-// Clear form
-clearForm();
-// Toggle form
-toggleForm();
-// Reload the DOM
-fetchCards();
+  // Clear form
+  clearForm();
+  // Toggle form
+  toggleForm();
+  // Reload the DOM
+  fetchCards();
 });
 
 if ('serviceWorker' in navigator) {
@@ -89,3 +89,20 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js');
   })
 };
+
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  installBtn.style.visibility = 'visible';
+
+  installBtn.addEventListener('click', () => {
+    event.prompt();
+    installBtn.setAttribute('disabled', true);
+    installBtn.textContent = 'Installed!';
+  });
+});
+
+window.addEventListener('appinstalled', (event) => {
+  console.log('👍', 'appinstalled', event);
+});
